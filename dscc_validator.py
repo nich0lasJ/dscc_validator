@@ -29,7 +29,7 @@ def dns_check(url):
             A_records.append(IPval.to_text())
         dns_pass = True
 
-        print("DNS reolution to " + url + " is working!")
+        print("DNS resolution to " + url + " is working!")
         print("The resolved IPs are: " + str(A_records))
         
     except dns.resolver.NXDOMAIN:
@@ -50,7 +50,7 @@ def dns_check(url):
 
 # Function to check if connectivity to an URL on a specific port is working
 # During execution it prints if the connection was successful or not
-# Returns True if connection succeds and False if it fails    
+# Returns True if connection succeeds and False if it fails    
 def port_check(url, port):
     
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -71,8 +71,8 @@ def port_check(url, port):
 
 # Define valid arguments
 # Available DSCC instances
-dscc_valid_instances = ["us1", "eu1", "jp1"]
-# Array type or service (BRS at the moment)
+dscc_valid_instances = ["us1", "eu1", "jp1", "uk1"]
+# Array type or service 
 platform_valid = ["nimble", "primera", "5000", "6000", "9000", "brs", "dr"]
 
 # Define default argument values 
@@ -111,20 +111,20 @@ if(input_error != "none"):
             print("Arguments missing....")
         print() 
         print("Usage: dscc_validator.exe <instance_name> <platform>.")
-        print("Mandatory argument: Valid options for <instance_name> are 'us1', 'eu1', 'jp1'")
+        print("Mandatory argument: Valid options for <instance_name> are 'us1', 'eu1', 'jp1', 'uk1'")
         print("Optional argument to check for InfoSight connectivity or Backup and Recovery Service connectivity: Valid options for <platform> are:")
         print("'5000' applies for Alletra 5000")
         print("'6000' applies for Alletra 6000")
         print("'9000' applies for Alletra 9000")
         print("'nimble' applies for Nimble")
         print("'primera' applies for Primera")
-        print("'brs' applies for Backup and Recovery Service")
+        print("'brs' applies for Backup and Recovery ")
         print("'dr' applies for Disaster Recovery")
         print()
     if(input_error == "invalid instance"):
         print()
         print("Invalid instance entered....") 
-        print("Valid options for <instance_name> are 'us1', 'eu1', 'jp1'")
+        print("Valid options for <instance_name> are 'us1', 'eu1', 'jp1', 'uk1'")
         print()
     if(input_error == "invalid platform"):
         print()
@@ -135,7 +135,7 @@ if(input_error != "none"):
         print("'9000' applies for Alletra 9000")
         print("'nimble' applies for Nimble")
         print("'primera' applies for Primera")
-        print("'brs' applies for Backup and Recovery Service")
+        print("'brs' applies for Backup and Recovery")
         print("'dr' applies for Disaster Recovery")
         print()
     
@@ -149,9 +149,9 @@ if(platform != "brs"):
     if(platform != "dr"):
         urls = [device_url, tunnel_url]
     else:
-        urls = [tunnel_url]
-elif(platform == "brs"):
-    urls = [tunnel_url, brs_do_url]
+        urls = [tunnel_url, brs_do_url]
+else: urls = [tunnel_url, brs_do_url]
+
 
 port = 443
 
@@ -173,13 +173,13 @@ print()
 
 # Test for DSCC connectivity
 for url in urls:
-    # Conditional to skip connectivity test if DSN resolution fails
+    # Conditional to skip connectivity test if DNS resolution fails
     dns_result_dscc = dns_check(url)
     if(dns_result_dscc == True):
         port_d = port_check(url, port)
 
 # Define URLs for InfoSight
-if(platform != "default" and platform != "brs"):
+if(platform != "default" and platform != "brs" and platform != "dr"):
     if(platform == "nimble" or platform == "5000" or platform == "6000"):
         urls = ["nsdiag.nimblestorage.com", 
             "update.nimblestorage.com", 
